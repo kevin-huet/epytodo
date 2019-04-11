@@ -1,0 +1,46 @@
+body {
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+    }
+
+#box {
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.65);
+}
+
+#404 {
+    display: float;
+    height: auto;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    margin-top: -100px;
+}
+
+#formspace {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#formspace li {
+    list-style-type:none;
+}
+
+#formspace input{
+    display: inline-block;
+    margin-right: 1em;
+}

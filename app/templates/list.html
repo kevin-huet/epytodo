@@ -1,0 +1,135 @@
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+</style>
+
+<meta charset="UTF-8"ame="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>todolist</title>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <!-- Logo -->
+        <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
+        <a class="navbar-brand" href="/">Epytodo</a>
+            <!-- Liens -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Deconnexion</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Bonjour {{ username }}</h1>
+            <p class="lead">Pour ajouter une tâche à ta liste, utilise le formulaire ci-dessous.</p>
+        </div>
+    </div>
+    <div style="margin: 0 auto; width:80%;">
+    <form action="add_task" method="POST">
+        <div class="form-group">
+            <input class="form-control" style="opacity: 0.6;" type="text" placeholder="Nom de la tâche" name="title" size="20">
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="date" name="begin" placeholder="MM/DD/YYYY" type="date"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="date" name="end" placeholder="MM/DD/YYYY" type="date"/>
+        </div>
+        <div class="form-group">
+            <SELECT name="status" id="status">
+                <OPTION value="2">Terminée
+                <OPTION value="1">Commencée
+                <OPTION value="0" selected>Pas commencée
+            </SELECT>
+        </div>
+        <button class="btn btn-primary" type="submit">Ajouter une tâche</button>
+	  </form>
+      <table class="table">
+        <tbody><tr>
+            <th>Nom de la tâche</th>
+            <th>Statut</th>
+            <th>Début</th>
+            <th>Fin</th>
+        </tr><tr>
+        {% for row in data %}
+        <tr>
+            <td> {{ row.title }} </td>
+            <td>{% if row.status == 0 %}
+                        <p>Pas commencée</p>
+                {% endif %}
+                {% if row.status == 1 %}
+                        <p>Commencée</p>
+                {% endif %}
+                {% if row.status == 2 %}
+                        <p>Terminée</p>
+                {% endif %}
+            </td>
+            <td> {{ row.begin }}</td>
+            <td> {{ row.end }}</td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myOutput{{ row.id }}">
+                    Modifier
+                </button>                        
+            </td>
+            <td><a href="task/{{ row.id }}">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </a></td>
+        </tr>
+        {% endfor %}
+        </tr></tbody></table>
+    </div>
+    {% for row in data %}
+    <div class="modal fade" id="myOutput{{ row.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modfier la tâche "{{ row.title }}"</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="task/edit/{{ row.id }}" method="POST">
+                        <div class="form-group">
+                                <input value="{{ row.title }}" class="form-control" style="opacity: 0.6;" type="text" name="title" size="20">
+                        </div>
+                        <div class="form-group">
+                                <input value="{{ row.begin }}" class="form-control" style="opacity: 0.6;" type="text" name="begin" size="20">
+                        </div>
+                        <div class="form-group">
+                                <input value="{{ row.end }}" class="form-control" style="opacity: 0.6;" type="text" name="end" size="20">
+                        </div>
+                        <div class="form-group">
+                            <SELECT name="status" id="status">
+                                <OPTION value="2">Terminée
+                                <OPTION value="1">Commencée
+                                <OPTION value="0" selected>Pas commencée
+                            </SELECT>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Appliquer</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+              </div>
+            </div>
+    </div>
+          {% endfor %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
